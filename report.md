@@ -58,7 +58,7 @@ that have great moutain slopes terrain but does not necessary provide a lot of d
 
 The following datasets will be used in building and evaluating the prediction models.
 
-* [www.skiresort.info][5] contains an extensive list of the U.S. ski resorts with the basic information
+* [www.skiresort.info][4] contains an extensive list of the U.S. ski resorts with the basic information
 for each resort such as the vertical drop,
 the base and peak elevations above the sea level,
 the total length of trail runs and their relative difficulty levels,
