@@ -45,9 +45,9 @@ outcomes and could be, therefore, considered to be an important factor of the pe
 
 Ski resorts might be interested in knowing the expected market value for the lift ticket
 at their resorts, to achieve any competitive advantage. This is especially relevant as the ski prices
-changes at least on an annual basis. The ability to relailbly evaluate market prices is important in dynamic pricing.
+changes at least on an annual basis. The ability to relailbly evaluate market prices is important for dynamic pricing.
 If any influence of the off-mountain infrastructure on the lift ticket prices is found, the resorts may consider
-investing into new venue development to improve the perceived resort values
+investing heavily into new venue development to improve the perceived resort value
 and justify further increase of the ticket prices.
 
 Skiers and snowboarders might be interested in knowing
@@ -70,6 +70,7 @@ and can be web-scraped to improve the price relevance.
 
 * [Foursquare Places API][6] can be used to retrieve
 the number of nearby restaurants, bars, and hotels within a given radius from a given resort location.
+The number of nearby venues will be used as a measure of the resort off-mountain infrastructure attractivness.
 
 ## References
 1. [Why Skiing Is a Ridiculously Good Workout][1]
