@@ -30,7 +30,7 @@ of a single-day ticket price. Whatever is the marketing strategy of a particular
 price is an important metric to compare the resorts, and it is the figure that many customers pay attention to.
 
 When it comes to the ticket price, it is natural to assume that the resort mountain infrastructure,
-such as the number of ski lifts, and the quality of moutain terrain,
+such as the number of ski lifts, and the quality of mountain terrain,
 such as the vertical drop and the number of trails, should be priced-in into the lift tickets. However, it is less obvious
 whether the off-mountain infrastructure, such a number of restaurants, bars, and hotels, affect the ticket prices.
 
@@ -45,14 +45,14 @@ outcomes and could be, therefore, considered to be an important factor of the pe
 
 Ski resorts might be interested in knowing the expected market value for the lift ticket
 at their resorts, to achieve any competitive advantage. This is especially relevant as the ski prices
-changes at least on an annual basis. The ability to relailbly evaluate market prices is important for dynamic pricing.
+changes at least on an annual basis. The ability to reliably evaluate market prices is important for dynamic pricing.
 If any influence of the off-mountain infrastructure on the lift ticket prices is found, the resorts may consider
 investing heavily into new venue development to improve the perceived resort value
 and justify further increase of the ticket prices.
 
 Skiers and snowboarders might be interested in knowing
 how justified are the ticket prices at a particular resort in order, for example, to choose a resort
-that have great moutain slopes terrain but does not necessary provide a lot of dinning options.
+that have great mountain slopes terrain but does not necessary provide a lot of dinning options.
 
 ## 2. Data acquisition and cleaning
 
@@ -66,8 +66,8 @@ the total length of trail runs and their relative difficulty levels,
 number of ski lifts,
 as well as the lift ticket price. This list was web-scraped and used as a starting point dataset.
 
-* [www.onthesnow.com][5] contains another table on prices at North America ski resorts
-and was web-scraped to improve the price relevance.
+* [www.onthesnow.com][5] contains another table on single-day prices at North America ski resorts
+and was web-scraped to improve the dataset price relevance.
 
 * [wikipedia.org][6] has a ski resort comparison table. This table was also web-scraped to improve the dataset quality.
 
@@ -78,96 +78,109 @@ the number of nearby shops, cafes, restaurants, bars, and hotels within a 5 km r
 The number of nearby venues was used as a proxy measure of the resort off-mountain infrastructure attractivness.
 
 ### 2.2 Data cleaning
-Dataset from [www.skiresort.info][4] was used an intial table as it is the largest out of the listed above. All duplicate entries in the table were removed. There were some missing price values. The price information and the statistics on the number of ski lifts was improved by adding the values from the other datasets. Special care was taken to match the names of the resorts in different
-datasets as there is some varience. This could be achieved by droping less-informative words such as 'Ski', 'Resort',
-'Mountain', etc. to obtain the shortest form of the resort name. The shorten names were checked for their uniquness.
-When combining the price information the highest number was kept as it is most reasonable assumption for the most recent price.
-33 resorts that still had missing price values were dropped from the dataset as this subset constituted less than 10% of the entire dataset and almost all of those resorts are very small and have only one or two ski lifts. 
 
-After aquiring the location information for all resorts, the number of nearby venues within a 5 km raidus from the resort locations were added to the table using [Foursquare Places API][8]. The list of venues costited of shops, cafes, restaurants, bars, and hotels. Shops and cafes were included for the test reasons as they are not typically associated with the ski resorts. 
+The [www.skiresort.info][4] data formed the initial ski resort table for this project as it is the largest dataset out of the listed above. All duplicate entries in the table were removed. There were some missing price values. The price information and the statistics on the number of ski lifts was improved by retriving the values from the other datasets. Special care was taken to match the names of the resorts in different datasets as there is some variance. This was achieved by dropping less-informative words such as *Ski*, *Resort*, *Mountain*, etc. to obtain the shortest form of the resort name. The shorten names were checked for their uniqueness.
+In the process of combining the price information, the highest number was kept because this should be a reasonable assumption in determining the most recent price. 33 resorts that still had missing price values were dropped from the dataset as this subset constituted less than 10% of the entire dataset and almost all of those resorts are very small and have only one or two ski lifts. 
+
+After acquiring the location information for all resorts, the number of nearby venues within a 5 km radius from the resort locations were added to the table using [Foursquare Places API][8]. The list of venues consisted of shops, cafes, restaurants, bars, and hotels. Shops and cafes were included for the test purposes as they are not typically associated with the ski resort activities. 
 
 ### 2.3 Feature selection
 
-After data cleaning, there were 385 entries with price information and 13 additional numerical features in the dataset. Upon examining the meaning of each feature, it was clear that there was some redundancy in the features. For example, *Vertical Drop* is the difference between *Peak Elevation* and *Base Elevation*. Similarly, *Total Trails* is the sum of *Green Trails*, *Blue Trails*, and *Black Trails*. *Restaurants*, *Cafes*, and *Shops* have correlations above 0.90 indicating the potential redundancy.
+After data cleaning, there were 385 entries with price information and 13 additional numerical features in the dataset. Upon examining the meaning of each feature, it was clear that there was some redundancy in the features. For example, *Vertical Drop* is the difference between *Peak Elevation* and *Base Elevation*. Similarly, *Total Trails* is the sum of *Green Trails*, *Blue Trails*, and *Black Trails*. *Restaurants*, *Cafes*, and *Shops* have correlations above 0.90, indicating another potential redundancy.
 
 ![Correlation Matrix][correlations]
 
 ## 3. Methodology
 
 ### 3.1 Models
-Four models that are different in selected features were tested.
 
-* Model *All Stats*. This model included all initial dataset numerical features excluding any venue information. The performance of this model should provide the baseline.
+Four models that are different in the subsets of features were tested.
+
+* Model *All Stats*. This model included all initial numerical features excluding the venue information. The performance of this model provided the baseline performance.
 
 * Model *Selected Stats*. *Peak Elevation* and *Total Trails* were removed from this model to illustrate the fact that the removing the redundant features does not change the model performance.
 
-* Model *Selected Stats & All Venues*. Here, all venue features were added to the features used in *Selected Stats* model.
+* Model *Selected Stats & All Venues*. Here, all venue features were added to the features used in model *Selected Stats*.
 
-* Model *Selected Stats & Venues*. Here, only information on the number of restaurants and hotels were added to *Selected Stats* model. This is a simpler model, with all obvious redanancies removed. The hope here is that the model performace would not suffer from the feature removal.
+* Model *Selected Stats & Venues*. Here, only information on the number of restaurants and hotels were added to the *Selected Stats* model. This is a relatively simple model, with all obvious redundancies removed. The hope was that the model performance would not suffer from the redundant and highly-correlated feature removal.
 
-Linear regression models using these feature sets were build and characterized.
+In this project, linear regression models using these feature sets were build and characterized.
 
 ### 3.2 Exploratory data analysis
 
 The success of the linear regression models depends on the amount of correlation between the predicting values and the features.
 
 The scatter plot below explores the correlation between the ski lift ticket price and *Peak Elevation*, *Base Elevation*, and *Vertical Drop*.
-![Elevations and Vertical Drop vs Price Scatter Plot][scatter_elevations]
-While the correlation between the resort vertical drop and the ski lift ticket price is expected (rides typically enjoy long trails more), there seem to be some correlations between the price and the resort elevation above the sea level. It might be still meaningful to keep one of these absolute evaluation features as a hypothetical proxy for the amount of average snowfall or the length of ski season.
 
-The scatter plot below explores the correlation between the ski lift ticket price and number of ski lifts.
+![Elevations and Vertical Drop vs Price Scatter Plot][scatter_elevations]
+
+While the correlation between the resort vertical drop and the ski lift ticket price is expected (the rides typically prefer resorts with longer trails), there seem to be some correlations between the price and the resort elevation above the sea level. It might be still meaningful to keep one of these absolute evaluation features as a hypothetical proxy for the amount of average snowfall or the length of the ski season.
+
+The scatter plot below explores the correlation between the ski lift ticket price and the number of ski lifts.
+
 ![Number of Ski Lifts vs Price Scatter Plot][scatter_ski_lifts]
-Clearly and not surprisingly, there is a signficant amount of correlation, and this is one of the most important features for any predictive model.
+
+Clearly and not surprisingly, there is a significant amount of correlation, and this is one of the most important features for any predictive model.
 
 The scatter plot below explores the correlation between the ski lift ticket price and the accumulated trail lengths at different difficulty levels.
-![Trail Lengths vs Price Scatter Plot][scatter_trails]
-Clearly, there is notable correlation between the accumulated trail lengths and it is meaningful to keep these features.
 
-The scatter plot below explores the correlation between the ski lift ticket price and the number of neaby venues of different types.
+![Trail Lengths vs Price Scatter Plot][scatter_trails]
+
+Clearly, there is notable correlation between the accumulated trail lengths, and it is meaningful to keep these features.
+
+The scatter plot below explores the correlation between the ski lift ticket price and the number of nearby venues of different types.
+
 ![Number of Nearby Venues vs Price Scatter Plot][scatter_venues]
-The correlations here are less obvious. However, upon a close inspection, one can notice some correlations between the price and number of hotels and restaurants.
+
+The correlations between the number of venues and the lift ticket price are less obvious. However, upon a close inspection, one can notice some correlations between the price and number of hotels and restaurants.
 
 ### 3.3 Model evaluation
 
-The performance of the models were evaluated by computing Residual Mean Squared (RMS) and R^2 scores using *k*-fold splitting of the initial dataset into training and testing subsets, and running over 100 splitting realiazations to get accurate estimations. 
+The performance of all models was evaluated by computing Residual Mean Squared (RMS) and R^2 scores using *k*-fold splitting of the initial dataset into training and testing subsets, and running over 100 splitting realizations to get the accurate estimations. 
 
 ![RMS Score Plot][rms_score]
-![RMS Score Table][rms_table]
-It is clear that RMS score is slightly reduced for the models that include venue features.
+<img src="https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/rms_table.png" alt="RMS Score Table" width="625">
+
+It is clear that RMS score is reduced for the models that include venue features.
 
 ![R^2 Score Plot][r2_score]
-![R^2 Score Table][r2_table]
-It is clear that R^2 improves when the venue information is included from about 0.71 to 0.73. While the improvement might not be that imnpressive it clear that it is larger than the difference in the score between two models that do not include any venue information, and between two models that are different in venue features.
+<img src="https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/r2_table.png" alt="R^2 Score Table" width="625">
+
+It is clear that R^2 improves when the venue information is included from about 0.71 to 0.73. While the improvement might not be that impressive it is obvious that this improvement is still larger than  any difference in the R^2 score between two models that do not include any venue information, and between the other two models that are different in selected venue features.
 
 Thus, inspection of the RMS and R^2 scores confirms that removing redundant or highly-correlated features do not significantly reduce the model performance, while adding some venue information can improve it. The performance scores favors model *Selected Stats & Venues* as it provides the best performance with a relatively limited set of features.
 
 The distribution plots of the actual and predicted prices give further insights into the performance of the best model.
+
 ![Performance on Training Dataset][train]
 ![Performance on Test Dataset][test]
+
+We can see that there are price regions, especially on the cheaper side, that can benefit from further model improvements.
 
 ## 4. Results
 
 From the model performance evaluations, it is clear that including the nearby venue data can improve the model performance.
 
-For further insights into the best performing model, we can look into its linear regression coefficients 
+For further insights into the best performing model, we can look into the model linear regression coefficients 
+
 ![Model Coefficients][coefficients]
-The meaning of these coefficients is the price value associated with each unit of the specific feature. We can see that not all features contribute equally, even when they share the same measurement units. More importantly, it appears that the number of lifts is one of the most important predictors. The accumulated lengths of green trails has the most significant contribution to the price compared to the trails of the other difficulty levels. And finally, the resorts that have more lodging options near the resort tend to be more expensive. Number of dinning options also increases the expected ticket price but the effect is less significant when it is compared to the contribution from the lodging options.
+
+The meaning behind these coefficients is the added price value associated with each unit of the specific feature. We can see that not all features contribute equally, even when they share the same measurement unit. More importantly, it appears that the number of lifts is one of the most important price predictors. The accumulated lengths of green trails has the most significant contribution to the price compared to the trail lengths at the other difficulty levels. And finally, the resorts that have more lodging options near the resort tend to be more expensive. The number of dinning options may also drive the expected ticket price but the effect is less significant when it is compared to the contribution from the lodging options.
 
 ## 5. Discussion
 
-The analysis above shows that it is possible to build relatively successful lift ticket price prediction models using the linear regression approach. The performance of these models can be improved by including the information about the number of venues nearby, more specificlaly, by including the number of hotels and restaurants within a certain radius. This result suggests that investing into the off-mountain infrastructure is a meaningful option for increasing the perceived value of the resort lift ticket.
+The analysis above shows that it is possible to build relatively successful lift ticket price prediction models using the linear regression approach. The performance of these models can be improved by including the information about the number of venues nearby, more specifically, by including the number of hotels and restaurants within a certain radius. This result suggests that investing into the off-mountain infrastructure is a meaningful option for increasing the perceived value of the resort experience and, thus, the value of a lift ticket.
 
-While increasing the vertical drop of an existing resort might be a totally unrealistic endevour, the resorts that have limited number of ski lifts or green trails might have a good potential for growth by improving on-mountain infrastructure. The resorts with well-developed mountain terrains may consider investing into the local infrastructure by increasing the number of lodging and dinning options.
+While increasing the vertical drop of an existing resort might be a totally unrealistic feat, the resorts that have limited number of ski lifts or green trails might still bear a good potential for growth by improving on-mountain infrastructure. The resorts with the well-developed mountain terrain may consider investing into the local infrastructure by increasing the number of lodging and dinning options.
 
 ## 6. Conclusion
 
-We have seen that including the number of nearby restaurants and, especially, the number of hotels near ski resorts improves the linear regression model performance. The improvement is relatively small but the effect is robust: off-mountain infrastructure clearly is priced-in into the lift tickets. Not all on- and off-mountain factors contribute equally to the price of the ticket. The regression models can provide the directions for the resort infrastruture development.
-
+We have seen that including the number of nearby restaurants and, especially, the number of hotels near ski resorts improves the linear regression model performance. The improvement is relatively small but the effect is robust: off-mountain infrastructure clearly is priced-in into the ski lift tickets. Not all on- and off-mountain factors contribute equally to the price of the ticket. The regression models can provide clear directions for the resort infrastructure development.
 
 ## 7. Future directions
 
-The regression model presented here has a good potential for further impovements. Obviously, it might be beneficial to do a more detailed analysis of the venue types, filter the venue datasets to avoid double-counting, and remove any other incosistencies. The 5 km radius used in this study might need to be optimized for better performance. Exploring residulals may reveal some non-linear behavior that potentially can be included into the model. The ski resorts are also different in their natural appearance such as the length of the ski season. So, one may want to include other basic statistical parameters such as the average annual snowfall, or the average winter temperature. The ski resorts are spread between the states with signficantly diffent costs of living, which could be included in the model. Many ski resorts are owned by the umbrella companies that own other resorts [9]. The owner companies might adhere to different policies in establishing their ticket prices. Thus, it would be interesting to see how 
-one hot encoding of the resort owners [9] can improve the results. Finally, clustering techniques applied to the dataset might reveal extra insights into the common factors that affect the lift ticket prices.
+The regression model presented here can be improved further. Obviously, it might be beneficial to do a more detailed analysis of the venue types, filter the venue dataset to avoid double-counting, and remove any other inconsistencies. The 5 km radius used in this study could be optimized for better performance. Exploring residuals may reveal some important non-linear behavior that potentially can be included into the model. The ski resorts are also different in their natural aspects such as the correspondng length of the ski season. Thus, one may want to include other statistical parameters such as the average annual snowfall, or the average winter temperature. The ski resorts are spread across the states with significantly different costs of living. The cost of living difference could be build-in directily into the model. Many ski resorts are owned by the umbrella companies that own other resorts [9]. The owner companies might adhere to different policies when they determine their resort ticket prices. Thus, it would be interesting to see how 
+one hot encoding of the resort owners can improve the prediction outcomes. Finally, clustering techniques applied to the resort datasets might reveal extra insights into the common factors that influence the lift ticket prices.
 
 
 ## References
@@ -192,15 +205,13 @@ one hot encoding of the resort owners [9] can improve the results. Finally, clus
 [9]: http://www.nsaa.org/press/industry-stats/industry-stats-pages/who-owns-which-mountain-resorts/
 
 
-[correlations]: https://github.com/patzinak/coursera-capstone-project/report_figures/correlations.png "Correlation Matrix"
-[scatter_elevations]: https://github.com/patzinak/coursera-capstone-project/report_figures/scatter_elevations.png "Elevations and Vertical Drop vs Price Scatter Plot"
-[scatter_ski_lifts]: https://github.com/patzinak/coursera-capstone-project/report_figures/scatter_ski_lifts.png "Number of Ski Lifts vs Price Scatter Plot"
-[scatter_trails]: https://github.com/patzinak/coursera-capstone-project/report_figures/scatter_trails.png "Trail Lengths vs Price Scatter Plot"
-[scatter_venues]: https://github.com/patzinak/coursera-capstone-project/report_figures/scatter_venues.png "Number of Nearby Venues vs Price Scatter Plot"
-[rms_score]: https://github.com/patzinak/coursera-capstone-project/report_figures/rms_score.png "RMS Score Plot"
-[rms_table]: https://github.com/patzinak/coursera-capstone-project/report_figures/rms_table.png "RMS Score Table"
-[r2_score]: https://github.com/patzinak/coursera-capstone-project/report_figures/r2_score.png "R^2 Score Plot"
-[r2_table]: https://github.com/patzinak/coursera-capstone-project/report_figures/r2_table.png "R^2 Score Table"
-[train]: https://github.com/patzinak/coursera-capstone-project/report_figures/r2_table.png "Performance on Training Dataset"
-[test]: https://github.com/patzinak/coursera-capstone-project/report_figures/r2_table.png "Performance on Test Dataset"
-[coefficients]: https://github.com/patzinak/coursera-capstone-project/report_figures/correlations.png "Model coefficients"
+[correlations]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/correlations.png "Correlation Matrix"
+[scatter_elevations]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_elevations.png "Elevations and Vertical Drop vs Price Scatter Plot"
+[scatter_ski_lifts]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_ski_lifts.png "Number of Ski Lifts vs Price Scatter Plot"
+[scatter_trails]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_trails.png "Trail Lengths vs Price Scatter Plot"
+[scatter_venues]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_venues.png "Number of Nearby Venues vs Price Scatter Plot"
+[rms_score]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/rms_score.png "RMS Score Plot"
+[r2_score]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/r2_score.png "R^2 Score Plot"
+[train]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/train.png "Performance on Training Dataset"
+[test]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/test.png "Performance on Test Dataset"
+[coefficients]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/coefficients.png "Model Coefficients"
