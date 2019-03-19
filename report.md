@@ -96,13 +96,13 @@ After data cleaning, there were 385 entries with price information and 13 additi
 
 Four models that are different in the subsets of features were tested.
 
-* Model *All Stats*. This model included all initial numerical features excluding the venue information. The performance of this model provided the baseline performance.
+* Model *All Stats*. This model included the initial numerical features without any venue information. The performance of this model provided the baseline against which the other models can be compared to.
 
-* Model *Selected Stats*. *Peak Elevation* and *Total Trails* were removed from this model to illustrate the fact that the removing the redundant features does not change the model performance.
+* Model *Selected Stats*. *Peak Elevation* and *Total Trails* were removed from this model to illustrate the fact that removing of the redundant features does not change the model performance.
 
-* Model *Selected Stats & All Venues*. Here, all venue features were added to the features used in model *Selected Stats*.
+* Model *Selected Stats & All Venues*. Here, all venue features were added in addition to the features used in model *Selected Stats*.
 
-* Model *Selected Stats & Venues*. Here, only information on the number of restaurants and hotels were added to the *Selected Stats* model. This is a relatively simple model, with all obvious redundancies removed. The hope was that the model performance would not suffer from the redundant and highly-correlated feature removal.
+* Model *Selected Stats & Venues*. Here, only information on the number of restaurants and hotels was added to the *Selected Stats* model. This is a relatively simple model, with all obvious redundancies removed. The hope was that the model performance would not suffer from the redundant and highly-correlated feature removal.
 
 In this project, linear regression models using these feature sets were build and characterized.
 
