@@ -86,7 +86,7 @@ After acquiring the location information for all resorts, the number of nearby v
 
 ### 2.3 Feature selection
 
-After data cleaning, there were 385 entries with price information and 13 additional numerical features in the dataset. Upon examining the meaning of each feature, it was clear that there was some redundancy in the features. For example, *Vertical Drop* is the difference between *Peak Elevation* and *Base Elevation*. Similarly, *Total Trails* is the sum of *Green Trails*, *Blue Trails*, and *Black Trails*. *Restaurants*, *Cafes*, and *Shops* have correlations above 0.90, indicating another potential redundancy.
+After data cleaning, there were 383 entries with price information and 13 additional numerical features in the dataset. Upon examining the meaning of each feature, it was clear that there was some redundancy in the features. For example, *Vertical Drop* is the difference between *Peak Elevation* and *Base Elevation*. Similarly, *Total Trails* is the sum of *Green Trails*, *Blue Trails*, and *Black Trails*. *Restaurants*, *Cafes*, and *Shops* have correlations above 0.90, indicating another potential redundancy.
 
 ![Correlation Matrix][correlations]
 
@@ -205,7 +205,7 @@ one hot encoding of the resort owners can improve the prediction outcomes. Final
 [9]: http://www.nsaa.org/press/industry-stats/industry-stats-pages/who-owns-which-mountain-resorts/
 
 
-[correlations]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/correlations.png "Correlation Matrix"
+[correlations]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/correlations2.png "Correlation Matrix"
 [scatter_elevations]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_elevations.png "Elevations and Vertical Drop vs Price Scatter Plot"
 [scatter_ski_lifts]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_ski_lifts.png "Number of Ski Lifts vs Price Scatter Plot"
 [scatter_trails]: https://github.com/patzinak/coursera-capstone-project/blob/master/report_figures/scatter_trails.png "Trail Lengths vs Price Scatter Plot"
